@@ -1,12 +1,21 @@
+/* Página de resumen con los datos recopilados y navegación de vuelta */
 import React from 'react';
-import '../styles/forms.css';
 
-interface ResumenProps {
-  formData: { [key: string]: any };
-  onBack: () => void;
+interface FormData {
+  personal?: { [key: string]: string | number | string[] };
+  academic?: { [key: string]: string | number | string[] };
+  tech?: { [key: string]: string | number | string[] };
+  movie?: { [key: string]: string | number | string[] };
 }
 
-const Resumen: React.FC<ResumenProps> = ({ formData, onBack }) => {
+interface ResumenProps {
+  formData: FormData;
+  onBack: () => void;
+  onReset: () => void; // Prop para resetear
+}
+
+/* Componente Resumen que muestra los datos recopilados y opciones de navegación */
+const Resumen: React.FC<ResumenProps> = ({ formData, onBack, onReset }) => {
   return (
     <div className="page-container">
       <h1>Resumen de Tus Respuestas</h1>
@@ -14,7 +23,7 @@ const Resumen: React.FC<ResumenProps> = ({ formData, onBack }) => {
         <div key={formId} className="summary-section">
           <h2>{formId.charAt(0).toUpperCase() + formId.slice(1)}</h2>
           <ul>
-            {Object.entries(data).map(([field, value]) => (
+            {Object.entries(data || {}).map(([field, value]) => (
               <li key={field}>
                 <strong>{field.replace(/_/g, ' ').charAt(0).toUpperCase() + field.slice(1).replace(/_/g, ' ')}:</strong> {JSON.stringify(value)}
               </li>
@@ -24,6 +33,9 @@ const Resumen: React.FC<ResumenProps> = ({ formData, onBack }) => {
       ))}
       <button className="back-button" onClick={onBack}>
         Volver a Bienvenida
+      </button>
+      <button className="back-button" onClick={onReset}>
+        Reset
       </button>
     </div>
   );

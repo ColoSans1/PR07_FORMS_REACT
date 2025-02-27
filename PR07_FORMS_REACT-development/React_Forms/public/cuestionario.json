@@ -13,21 +13,24 @@
       "id": "academic",
       "titulo": "Evaluación Académica",
       "campos": [
-        { "id": "nivel_educativo", "tipo": "text", "pregunta": "¿Cuál es tu nivel educativo?", "restricciones": { "min": 3, "max": 50 } }
+        { "id": "educationLevel", "tipo": "select", "pregunta": "¿Nivel educativo?", "opciones": ["Secundaria", "Preparatoria", "Universidad", "Posgrado"] },
+        { "id": "university", "tipo": "text", "pregunta": "¿Universidad?", "restricciones": { "min": 3, "max": 50 } }
       ]
     },
     {
       "id": "tech",
       "titulo": "Preferencias en Tecnología",
       "campos": [
-        { "id": "dispositivos", "tipo": "check", "pregunta": "¿Qué dispositivos usas regularmente?", "opciones": ["smartphone", "laptop", "tablet", "smartwatch"], "validacion": { "max_seleccionados": 2 } }
+        { "id": "favoriteLanguage", "tipo": "select", "pregunta": "¿Lenguaje favorito?", "opciones": ["JavaScript", "Python", "Java", "TypeScript"] },
+        { "id": "experienceYears", "tipo": "text", "pregunta": "¿Años de experiencia?", "restricciones": { "min": 0, "max": 50 }, "validacion": { "min_edad": 0 } }
       ]
     },
     {
       "id": "movie",
       "titulo": "Preferencias en Cine",
       "campos": [
-        { "id": "genero_favorito", "tipo": "select", "pregunta": "¿Cuál es tu género favorito?", "opciones": ["Acción", "Comedia", "Drama", "Ciencia Ficción"] }
+        { "id": "favoriteGenre", "tipo": "select", "pregunta": "¿Género favorito?", "opciones": ["Acción", "Comedia", "Drama", "Ciencia Ficción"] },
+        { "id": "favoriteMovie", "tipo": "text", "pregunta": "¿Película favorita?", "restricciones": { "min": 3, "max": 50 } }
       ]
     }
   ]
