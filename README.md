@@ -1,1 +1,1 @@
-<h1> ACTIVITAD REACT -- PROGRESS </h1>
+<h1> ACTIVITAD REACT -- PROGRESS ---  | Arnau Colominas Sans</h1>
