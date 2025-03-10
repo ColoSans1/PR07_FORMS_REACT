@@ -1,11 +1,18 @@
-/* Punto de entrada principal de la aplicación con React y Vite */
-import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import React from 'react';
+import ReactDOM from 'react-dom/client';  
 import './index.css';
-import App from './App.tsx';
+import App from './App';
+import './i18n'; 
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-);
+const rootElement = document.getElementById('root');
+
+if (rootElement) { 
+  const root = ReactDOM.createRoot(rootElement); 
+  root.render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+} else {
+  console.error('No se encontró el elemento con id "root".');
+}

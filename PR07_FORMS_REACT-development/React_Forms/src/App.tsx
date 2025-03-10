@@ -1,22 +1,20 @@
-/* Componente principal que maneja la navegación y estado de los formularios */
-import React, { useState, useEffect } from 'react';
-import Home from './pages/Home';
-import PersonalForm from './pages/PersonalForm';
-import AcademicForm from './pages/AcademicForm';
-import TechPrefsForm from './pages/TechPrefsForm';
-import MoviePrefsForm from './pages/MoviePrefsForm';
-import Resumen from './pages/Resumen';
-import './styles/forms.css';
-
-
+import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import Home from "./pages/Home";
+import PersonalForm from "./pages/PersonalForm";
+import AcademicForm from "./pages/AcademicForm";
+import TechPrefsForm from "./pages/TechPrefsForm";
+import MoviePrefsForm from "./pages/MoviePrefsForm";
+import Resumen from "./pages/Resumen";
+import "./styles/forms.css";
 
 interface Campo {
   id: string;
-  tipo: 'text' | 'textarea' | 'select' | 'check';
+  tipo: "text" | "textarea" | "select" | "check";
   pregunta: string;
   restricciones?: { min: number; max: number };
   validacion?: {
-    formato?: 'email';
+    formato?: "email";
     dominio?: string;
     min_edad?: number;
     max_seleccionados?: number;
@@ -37,36 +35,34 @@ interface FormData {
   movie?: { [key: string]: string | number | string[] };
 }
 
-/* Componente App que gestiona la navegación secuencial y los datos de los formularios */
 const App: React.FC = () => {
-  const [paginaActual, setPaginaActual] = useState('bienvenida');
+  const { t, i18n } = useTranslation();
+  const [paginaActual, setPaginaActual] = useState("bienvenida");
   const [formData, setFormData] = useState<FormData>({});
 
-  // Recuperar datos del localStorage al montar el componente
   useEffect(() => {
-    const savedData = localStorage.getItem('formData');
+    const savedData = localStorage.getItem("formData");
     if (savedData) {
       setFormData(JSON.parse(savedData));
     }
   }, []);
 
-  // Guardar datos en localStorage cuando cambien
   useEffect(() => {
-    localStorage.setItem('formData', JSON.stringify(formData));
+    localStorage.setItem("formData", JSON.stringify(formData));
   }, [formData]);
 
   const handleFormSubmit = (data: { [key: string]: string | number | string[] }, formId: string, nextPage: string) => {
     let hasErrors = false;
-    Object.values(data).forEach(value => {
-      if (!value || (typeof value === 'string' && value.trim() === '')) {
+    Object.values(data).forEach((value) => {
+      if (!value || (typeof value === "string" && value.trim() === "")) {
         hasErrors = true;
       }
     });
     if (hasErrors) {
-      alert('Por favor, completa todos los campos correctamente antes de continuar.');
+      alert(t("errors.completeFields"));
       return;
     }
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [formId]: data,
     }));
@@ -75,43 +71,43 @@ const App: React.FC = () => {
 
   const handleReset = () => {
     setFormData({});
-    setPaginaActual('bienvenida');
-    localStorage.removeItem('formData');
+    setPaginaActual("bienvenida");
+    localStorage.removeItem("formData");
   };
 
   const renderPagina = () => {
     switch (paginaActual) {
-      case 'bienvenida':
-        return <Home onStart={() => setPaginaActual('personal')} />;
-      case 'personal':
-        return <PersonalForm onSubmit={(data) => handleFormSubmit(data, 'personal', 'academic')} />;
-      case 'academic':
-        return <AcademicForm onSubmit={(data) => handleFormSubmit(data, 'academic', 'tech')} />;
-      case 'tech':
-        return <TechPrefsForm onSubmit={(data) => handleFormSubmit(data, 'tech', 'movie')} />;
-      case 'movie':
-        return <MoviePrefsForm onSubmit={(data) => handleFormSubmit(data, 'movie', 'resumen')} />;
-      case 'resumen':
-        return <Resumen formData={formData} onBack={() => setPaginaActual('bienvenida')} onReset={handleReset} />;
+      case "bienvenida":
+        return <Home onStart={() => setPaginaActual("personal")} />;
+      case "personal":
+        return <PersonalForm onSubmit={(data) => handleFormSubmit(data, "personal", "academic")} />;
+      case "academic":
+        return <AcademicForm onSubmit={(data) => handleFormSubmit(data, "academic", "tech")} />;
+      case "tech":
+        return <TechPrefsForm onSubmit={(data) => handleFormSubmit(data, "tech", "movie")} />;
+      case "movie":
+        return <MoviePrefsForm onSubmit={(data) => handleFormSubmit(data, "movie", "resumen")} />;
+      case "resumen":
+        return <Resumen formData={formData} onBack={() => setPaginaActual("bienvenida")} onReset={handleReset} />;
       default:
-        return <Home onStart={() => setPaginaActual('personal')} />;
+        return <Home onStart={() => setPaginaActual("personal")} />;
     }
   };
 
   return (
     <div className="app">
-<header className="app-header">
-  <h1>PR07_FORMS_REACT</h1>
-  <button>ES</button>
-  <button>EN</button>
-</header>
-      <section className="content-section">
-        {renderPagina()}
-      </section>
+      <header className="app-header">
+        <h1>{t("app.title")}</h1>
+        <div className="language-buttons">
+          <button onClick={() => i18n.changeLanguage("es")}>🇪🇸 {t("language.spanish")}</button>
+          <button onClick={() => i18n.changeLanguage("en")}>🇬🇧 {t("language.english")}</button>
+        </div>
+      </header>
+      <section className="content-section">{renderPagina()}</section>
       <footer className="app-footer">
-        <p>PR07_FORMS_REACT - {new Date().toLocaleString()}</p>
+        <p>{t("app.footer")} - {new Date().toLocaleString()}</p>
       </footer>
-      <p>Estado actual: {paginaActual}</p>
+      <p>{t("app.currentState")}: {t(`pages.${paginaActual}`)}</p>
     </div>
   );
 };

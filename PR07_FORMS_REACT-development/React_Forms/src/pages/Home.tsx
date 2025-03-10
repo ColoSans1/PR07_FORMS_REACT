@@ -1,23 +1,19 @@
-/* Página de bienvenida con instrucciones y botón para empezar */
-import React from 'react';
+import React from "react";
+import { useTranslation } from "react-i18next";
 
 interface HomeProps {
-  onStart: () => void; // Prop para iniciar los formularios
+  onStart: () => void;
 }
 
-/* Componente Home que muestra la página inicial con instrucciones */
 const Home: React.FC<HomeProps> = ({ onStart }) => {
+  const { t, i18n } = useTranslation();
+
   return (
     <div className="page-container">
-      <h1>Página de Bienvenida</h1>
-      <p>
-        Esta aplicación te permite completar una serie de cuestionarios para recopilar información personal, evaluaciones 
-        académicas, preferencias en tecnología y preferencias en cine. Sigue las instrucciones a continuación para realizar 
-        los formularios: Completa cada formulario consecutivamente. Revisa los errores antes de avanzar al siguiente 
-        formulario. Al finalizar, verás un resumen con toda tu información.
-      </p>
+      <h1>{t("home.title")}</h1>
+      <p>{t("home.description")}</p>
       <button className="start-button" onClick={onStart}>
-        Comenzar Formularios
+        {t("home.startButton")}
       </button>
     </div>
   );

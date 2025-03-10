@@ -1,5 +1,5 @@
-/* Componente reutilizable para el formulario de evaluación académica */
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next'; // Importar useTranslation
 
 interface Campo {
   id: string;
@@ -29,8 +29,9 @@ interface FormAcademicProps {
   onSubmit: (data: AcademicData) => void;
 }
 
-/* Componente FormAcademic para gestionar dinámicamente el formulario académico */
 const FormAcademic: React.FC<FormAcademicProps> = ({ onSubmit }) => {
+  const { t, i18n } = useTranslation(); // Usar useTranslation
+
   const [formData, setFormData] = useState<AcademicData>({});
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [cuestionario, setCuestionario] = useState<Formulario[]>([]);
@@ -64,8 +65,8 @@ const FormAcademic: React.FC<FormAcademicProps> = ({ onSubmit }) => {
     let error = '';
     if (campo.restricciones) {
       const length = Array.isArray(value) ? value.join('').length : (value as string).length;
-      if (length < campo.restricciones.min) error = `Debe tener al menos ${campo.restricciones.min} caracteres`;
-      else if (length > campo.restricciones.max) error = `No puede tener más de ${campo.restricciones.max} caracteres`;
+      if (length < campo.restricciones.min) error = `${t('form.minLength')} ${campo.restricciones.min} ${t('form.characters')}`;
+      else if (length > campo.restricciones.max) error = `${t('form.maxLength')} ${campo.restricciones.max} ${t('form.characters')}`;
     }
     return error;
   };
@@ -116,8 +117,8 @@ const FormAcademic: React.FC<FormAcademicProps> = ({ onSubmit }) => {
               required
             >
               <option value="">Selecciona una opción</option>
-              {campo.opciones?.map(option => (
-                <option key={option} value={option}>{option}</option>
+              {campo.opciones?.map((option, index) => (
+                <option key={index} value={option}>{option}</option>
               ))}
             </select>
             {errors[campo.id] && <span className="error">{errors[campo.id]}</span>}
@@ -127,14 +128,16 @@ const FormAcademic: React.FC<FormAcademicProps> = ({ onSubmit }) => {
         return null;
     }
   };
+  
 
-  if (!currentForm) return <div className="page-container">Cargando...</div>;
+  if (!currentForm) return <div className="page-container">{t('form.loading')}</div>;  {/* Traducción para el estado de carga */}
 
   return (
     <form onSubmit={handleSubmit} className="form-container">
       <h2>{currentForm.titulo}</h2>
       {currentForm.campos.map(campo => renderCampo(campo))}
-      <button type="submit" className="start-button">Siguiente</button>
+      <button type="submit" className="start-button">{t('form.submitButton')}</button> {/* Botón traducido */}
+    
     </form>
   );
 };

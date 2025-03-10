@@ -1,37 +1,37 @@
 {
-  "formularios": [
-    {
-      "id": "personal",
-      "titulo": "Información Personal",
-      "campos": [
-        { "id": "names", "tipo": "text", "pregunta": "¿Cuál es tu nombre?", "restricciones": { "min": 3, "max": 50 } },
-        { "id": "age", "tipo": "text", "pregunta": "¿Cuál es tu edad?", "restricciones": { "min": 1, "max": 120 }, "validacion": { "min_edad": 0 } },
-        { "id": "email", "tipo": "text", "pregunta": "¿Cuál es tu correo electrónico?", "validacion": { "formato": "email", "dominio": "stucom.com" } }
-      ]
-    },
-    {
-      "id": "academic",
-      "titulo": "Evaluación Académica",
-      "campos": [
-        { "id": "educationLevel", "tipo": "select", "pregunta": "¿Nivel educativo?", "opciones": ["Secundaria", "Preparatoria", "Universidad", "Posgrado"] },
-        { "id": "university", "tipo": "text", "pregunta": "¿Universidad?", "restricciones": { "min": 3, "max": 50 } }
-      ]
-    },
-    {
-      "id": "tech",
-      "titulo": "Preferencias en Tecnología",
-      "campos": [
-        { "id": "favoriteLanguage", "tipo": "select", "pregunta": "¿Lenguaje favorito?", "opciones": ["JavaScript", "Python", "Java", "TypeScript"] },
-        { "id": "experienceYears", "tipo": "text", "pregunta": "¿Años de experiencia?", "restricciones": { "min": 0, "max": 50 }, "validacion": { "min_edad": 0 } }
-      ]
-    },
-    {
-      "id": "movie",
-      "titulo": "Preferencias en Cine",
-      "campos": [
-        { "id": "favoriteGenre", "tipo": "select", "pregunta": "¿Género favorito?", "opciones": ["Acción", "Comedia", "Drama", "Ciencia Ficción"] },
-        { "id": "favoriteMovie", "tipo": "text", "pregunta": "¿Película favorita?", "restricciones": { "min": 3, "max": 50 } }
-      ]
-    }
-  ]
-}
+    "formularios": [
+      {
+        "id": "personal",
+        "titulo": "Información Personal",
+        "campos": [
+          { "id": "names", "tipo": "text", "pregunta": "¿Cuál es tu nombre?", "restricciones": { "min": 3, "max": 50 } },
+          { "id": "age", "tipo": "text", "pregunta": "¿Cuál es tu edad?", "restricciones": { "min": 1, "max": 120 }, "validacion": { "min_edad": 0 } },
+          { "id": "email", "tipo": "text", "pregunta": "¿Cuál es tu correo electrónico?", "validacion": { "formato": "email", "dominio": "stucom.com" } }
+        ]
+      },
+      {
+        "id": "academic",
+        "titulo": "Evaluación Académica",
+        "campos": [
+          { "id": "educationLevel", "tipo": "select", "pregunta": "¿Nivel educativo?", "opciones": ["Secundaria", "Preparatoria", "Universidad", "Posgrado"] },
+          { "id": "university", "tipo": "text", "pregunta": "¿Universidad?", "restricciones": { "min": 3, "max": 50 } }
+        ]
+      },
+      {
+        "id": "tech",
+        "titulo": "Preferencias en Tecnología",
+        "campos": [
+          { "id": "favoriteLanguage", "tipo": "select", "pregunta": "¿Lenguaje favorito?", "opciones": ["JavaScript", "Python", "Java", "TypeScript"] },
+          { "id": "experienceYears", "tipo": "text", "pregunta": "¿Años de experiencia?", "restricciones": { "min": 0, "max": 50 }, "validacion": { "min_edad": 0 } }
+        ]
+      },
+      {
+        "id": "movie",
+        "titulo": "Preferencias en Cine",
+        "campos": [
+          { "id": "favoriteGenre", "tipo": "select", "pregunta": "¿Género favorito?", "opciones": ["Acción", "Comedia", "Drama", "Ciencia Ficción"] },
+          { "id": "favoriteMovie", "tipo": "text", "pregunta": "¿Película favorita?", "restricciones": { "min": 3, "max": 50 } }
+        ]
+      }
+    ]
+  }

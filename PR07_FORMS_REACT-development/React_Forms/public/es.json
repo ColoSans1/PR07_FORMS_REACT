@@ -1,0 +1,58 @@
+{
+  "app": {
+    "title": "PR07_FORMS_REACT",
+    "footer": "PR07_FORMS_REACT",
+    "currentState": "Estado actual"
+  },
+  "language": {
+    "spanish": "Español",
+    "english": "Inglés"
+  },
+  "pages": {
+    "bienvenida": "Bienvenida",
+    "personal": "Formulario Personal",
+    "academic": "Formulario Académico",
+    "tech": "Preferencias Tecnológicas",
+    "movie": "Preferencias de Cine",
+    "resumen": "Resumen"
+  },
+  "errors": {
+    "completeFields": "Por favor, completa todos los campos correctamente antes de continuar."
+  },
+  "home": {
+    "title": "Página de Bienvenida",
+    "description": "Esta aplicación te permite completar una serie de cuestionarios para recopilar información personal, evaluaciones académicas, preferencias tecnológicas y preferencias de películas. Sigue las instrucciones a continuación para completar los formularios: Completa cada formulario consecutivamente. Verifica los errores antes de proceder al siguiente formulario. Al final, verás un resumen con toda tu información.",
+    "startButton": "Comenzar Formularios"
+  },
+  "formularios": {
+    "personal": {
+      "titulo": "Información Personal",
+      "campos": {
+        "names": "¿Cuál es tu nombre?",
+        "age": "¿Cuál es tu edad?",
+        "email": "¿Cuál es tu correo electrónico?"
+      }
+    },
+    "academic": {
+      "titulo": "Evaluación Académica",
+      "campos": {
+        "educationLevel": "¿Nivel educativo?",
+        "university": "¿Universidad?"
+      }
+    },
+    "tech": {
+      "titulo": "Preferencias Tecnológicas",
+      "campos": {
+        "favoriteLanguage": "¿Lenguaje de programación favorito?",
+        "experienceYears": "¿Años de experiencia?"
+      }
+    },
+    "movie": {
+      "titulo": "Preferencias de Cine",
+      "campos": {
+        "favoriteGenre": "¿Género favorito?",
+        "favoriteMovie": "¿Película favorita?"
+      }
+    }
+  }
+}

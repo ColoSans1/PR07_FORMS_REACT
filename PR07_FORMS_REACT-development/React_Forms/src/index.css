@@ -9,62 +9,93 @@
 
 /* Estilos para el cuerpo con soporte para temas claro/oscuro */
 body {
-  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif; /* Tipografía moderna para el cuerpo */
-  line-height: 1.6; /* Mejor espaciado entre líneas */
-  font-weight: 400; /* Peso normal para texto */
-  color: rgba(0, 0, 0, 0.87); /* Color negro con opacidad para texto en modo claro */
-  background-color: #ffffff; /* Fondo blanco por defecto (modo claro) */
-  min-height: 100vh; /* Altura mínima para ocupar toda la pantalla */
-  text-rendering: optimizeLegibility; /* Optimización de legibilidad */
-  -webkit-font-smoothing: antialiased; /* Suavizado de fuentes en WebKit */
-  -moz-osx-font-smoothing: grayscale; /* Suavizado de fuentes en Firefox */
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.87);
+  background-color: #ffffff;
+  min-height: 100vh;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
 /* Tema oscuro */
 @media (prefers-color-scheme: dark) {
   body {
-    color: rgba(255, 255, 255, 0.87); /* Color blanco con opacidad para texto en modo oscuro */
-    background-color: #242424; /* Fondo oscuro por defecto */
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
   }
 }
 
 /* Estilos para enlaces con tipografía moderna */
 a {
-  font-weight: 500; /* Peso semi-negrita para enlaces */
-  color: #646cff; /* Color azul claro para enlaces */
-  text-decoration: inherit; /* Sin subrayado por defecto */
-  font-family: 'Inter', sans-serif; /* Tipografía moderna para enlaces */
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+  font-family: 'Inter', sans-serif;
 }
 
 a:hover {
-  color: #535bf2; /* Color más oscuro al pasar el ratón */
+  color: #535bf2;
 }
 
-/* Estilos básicos para botones globales (puedes sobrescribir en forms.css) */
+/* Estilos básicos para botones */
 button {
-  border-radius: 8px; /* Bordes redondeados */
-  border: 1px solid transparent; /* Borde transparente por defecto */
-  padding: 0.6em 1.2em; /* Espaciado interno */
-  font-size: 1em; /* Tamaño de fuente estándar */
-  font-weight: 500; /* Peso semi-negrita */
-  font-family: 'Inter', sans-serif; /* Tipografía moderna */
-  background-color: #1a1a1a; /* Fondo oscuro por defecto */
-  cursor: pointer; /* Cursor de mano */
-  transition: border-color 0.25s; /* Transición suave para el borde */
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: 'Inter', sans-serif;
+  background-color: #1a1a1a;
+  color: white;
+  cursor: pointer;
+  transition: border-color 0.25s, background-color 0.25s;
 }
 
 button:hover {
-  border-color: #646cff; /* Borde azul claro al pasar el ratón */
+  border-color: #646cff;
+  background-color: #333;
 }
 
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color; /* Outline para accesibilidad */
+  outline: 4px auto -webkit-focus-ring-color;
 }
 
 /* Tema claro para botones */
 @media (prefers-color-scheme: light) {
   button {
-    background-color: #f9f9f9; /* Fondo claro en modo claro */
+    background-color: #f9f9f9;
+    color: black;
   }
+}
+
+/* Estilos para la cabecera */
+.app-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #1a1a1a;
+  color: white;
+}
+
+.app-header h1 {
+  margin-left: 20px;
+}
+
+.language-switcher {
+  margin-right: 20px;
+}
+
+.language-switcher button {
+  margin: 0 5px;
 }

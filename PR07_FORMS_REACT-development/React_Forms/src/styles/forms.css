@@ -1,4 +1,4 @@
-/* Estilos generales para los componentes de formularios con diseño moderno y centrado */
+/* Estilos generales para los componentes de formularios con diseño moderno y oscuro */
 
 /* Contenedor principal de las páginas/formularios */
 .page-container, .form-container {
@@ -6,11 +6,12 @@
   margin: 0 auto; /* Centra el contenido horizontalmente */
   padding: 30px; /* Espaciado interno para un look espacioso */
   text-align: center; /* Alineación centrada para consistencia */
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); /* Gradiente suave para un fondo dinámico */
+  background: linear-gradient(135deg, #2d3436 0%, #000000 100%); /* Gradiente oscuro con tonos negros */
   border-radius: 15px; /* Bordes más redondeados para un toque moderno */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Sombra pronunciada para profundidad */
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7); /* Sombra más sutil para profundidad */
   animation: fadeIn 1s ease-in; /* Animación de entrada suave */
   font-family: 'Arial', sans-serif; /* Tipografía clara para párrafos y contenido */
+  overflow: hidden; /* Elimina cualquier desbordamiento inesperado */
 }
 
 /* Animación de entrada para los contenedores */
@@ -21,21 +22,21 @@
 
 /* Títulos principales y de formularios con tipografía destacada */
 .page-container h1, .form-container h2 {
-  color: #2c3e50; /* Color azul oscuro elegante */
+  color: #ecf0f1; /* Color blanco suave para títulos */
   margin-bottom: 25px; /* Espaciado inferior */
-  font-size: 2.5rem; /* Tamaño grande para impacto */
+  font-size: 2.8rem; /* Tamaño más grande para un impacto aún mayor */
   font-family: 'Inter', sans-serif; /* Tipografía moderna para títulos */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil en el texto */
-  letter-spacing: 1px; /* Espaciado entre letras para elegancia */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra sutil en el texto */
+  letter-spacing: 1.5px; /* Espaciado entre letras para elegancia */
 }
 
 /* Párrafos y listas con diseño limpio y centrado */
 .page-container p, .page-container ul, .form-container p {
-  color: #34495e; /* Color gris-azul oscuro para texto secundario */
+  color: #bdc3c7; /* Color gris claro para texto secundario */
   margin-bottom: 25px; /* Espaciado inferior */
   text-align: center; /* Centrado para consistencia */
-  font-size: 1.1rem; /* Tamaño de fuente mayor para legibilidad */
-  line-height: 1.6; /* Mejor espaciado entre líneas */
+  font-size: 1.15rem; /* Tamaño de fuente mayor para legibilidad */
+  line-height: 1.7; /* Mejor espaciado entre líneas */
   font-family: 'Arial', sans-serif; /* Tipografía clara para párrafos */
 }
 
@@ -48,63 +49,64 @@
 }
 
 .page-container li {
-  margin: 15px 0; /* Espaciado entre elementos de la lista */
+  margin: 20px 0; /* Espaciado entre elementos de la lista */
   text-align: center; /* Centrado para consistencia */
-  padding: 10px 20px; /* Espaciado interno para un look limpio */
-  background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente blanco */
-  border-radius: 8px; /* Bordes redondeados */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra ligera */
-  transition: transform 0.3s ease; /* Transición suave para hover */
+  padding: 12px 24px; /* Espaciado interno para un look más limpio */
+  background-color: rgba(44, 62, 80, 0.9); /* Fondo oscuro con transparencia */
+  border-radius: 12px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Sombra más suave */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave para hover */
 }
 
 .page-container li:hover {
   transform: scale(1.05); /* Efecto de zoom al pasar el ratón */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.7); /* Sombra más pronunciada al hover */
 }
 
 /* Estilos para los grupos de formulario (labels, inputs, selects) */
 .form-group {
-  margin-bottom: 20px; /* Espaciado inferior entre grupos */
+  margin-bottom: 25px; /* Espaciado inferior entre grupos */
   text-align: center; /* Centrado para consistencia */
 }
 
 .form-group label {
   display: block; /* Bloque para cada label */
-  margin-bottom: 8px; /* Espaciado inferior */
-  color: #34495e; /* Color gris-azul oscuro */
+  margin-bottom: 10px; /* Espaciado inferior */
+  color: #ecf0f1; /* Color blanco suave */
   font-weight: bold; /* Texto en negrita para destacar */
   font-family: 'Inter', sans-serif; /* Tipografía moderna para etiquetas */
-  font-size: 1rem; /* Tamaño de fuente */
+  font-size: 1.1rem; /* Tamaño de fuente ligeramente mayor */
 }
 
 .form-group input,
 .form-group select {
   width: 100%; /* Ancho completo */
-  max-width: 400px; /* Límite para evitar que se expanda demasiado */
-  padding: 12px; /* Más espaciado interno */
+  max-width: 450px; /* Límite para evitar que se expanda demasiado */
+  padding: 14px; /* Más espaciado interno */
   border: 2px solid #3498db; /* Borde azul vibrante */
-  border-radius: 10px; /* Bordes más redondeados */
+  border-radius: 12px; /* Bordes más redondeados */
   font-size: 1.1rem; /* Tamaño de fuente mayor */
   font-family: 'Arial', sans-serif; /* Tipografía clara para inputs */
-  transition: border-color 0.3s ease; /* Transición suave para el borde */
+  transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transición suave para el borde */
 }
 
 .form-group input:focus,
 .form-group select:focus {
   outline: none; /* Elimina el outline por defecto */
   border-color: #2980b9; /* Borde más oscuro al enfocar */
-  box-shadow: 0 0 10px rgba(52, 152, 219, 0.5); /* Sombra luminosa al enfocar */
+  box-shadow: 0 0 15px rgba(52, 152, 219, 0.5); /* Sombra luminosa al enfocar */
 }
 
 /* Estilos para los botones con diseño brillante y animado */
 .start-button, .back-button {
   background: linear-gradient(45deg, #3498db, #2980b9); /* Gradiente azul vibrante */
   color: white; /* Texto blanco para contraste */
-  padding: 15px 30px; /* Más espaciado interno para un look grande */
+  padding: 16px 32px; /* Más espaciado interno para un look más grande */
   border: none; /* Sin borde */
   border-radius: 25px; /* Bordes más redondeados para un estilo suave */
   cursor: pointer; /* Cursor de mano al pasar */
-  font-size: 1.2rem; /* Tamaño de fuente más grande */
-  margin: 15px; /* Margen entre botones */
+  font-size: 1.25rem; /* Tamaño de fuente más grande */
+  margin: 20px; /* Margen entre botones */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Sombra para profundidad */
   transition: all 0.3s ease; /* Transición suave para hover y clics */
   font-family: 'Inter', sans-serif; /* Tipografía moderna para botones */
@@ -125,13 +127,13 @@
 /* Estilos para los errores con diseño destacado y centrado */
 .error {
   color: #e74c3c; /* Color rojo vibrante para errores */
-  font-size: 0.9rem; /* Tamaño de fuente mayor */
-  margin-top: 8px; /* Espaciado superior */
+  font-size: 1rem; /* Tamaño de fuente mayor */
+  margin-top: 10px; /* Espaciado superior */
   display: block; /* Bloque para que no afecte otros elementos */
   text-align: center; /* Centrado para consistencia */
   font-weight: bold; /* Texto en negrita para destacar */
   background-color: rgba(231, 76, 60, 0.1); /* Fondo semitransparente rojo */
-  padding: 5px 10px; /* Espaciado interno */
+  padding: 8px 16px; /* Espaciado interno */
   border-radius: 5px; /* Bordes redondeados */
   animation: shake 0.5s; /* Animación de sacudida para errores */
   font-family: 'Arial', sans-serif; /* Tipografía clara para avisos */
