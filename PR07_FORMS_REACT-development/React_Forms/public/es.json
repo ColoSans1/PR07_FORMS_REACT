@@ -2,7 +2,8 @@
   "app": {
     "title": "PR07_FORMS_REACT",
     "footer": "PR07_FORMS_REACT",
-    "currentState": "Estado actual"
+    "currentState": "Estado actual",
+    "viewAllForms": "Ver todos los formularios"
   },
   "language": {
     "spanish": "Español",
@@ -53,6 +54,12 @@
         "favoriteGenre": "¿Género favorito?",
         "favoriteMovie": "¿Película favorita?"
       }
-    }
+    },
+      "app": {
+        "title": "Mi Aplicación de Formularios",
+        "footer": "Todos los derechos reservados",
+        "currentState": "Página actual",
+        "viewAllForms": "Ver todos los formularios"
+      }    
   }
 }

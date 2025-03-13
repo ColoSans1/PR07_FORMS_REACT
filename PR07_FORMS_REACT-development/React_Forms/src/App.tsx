@@ -7,6 +7,7 @@ import TechPrefsForm from "./pages/TechPrefsForm";
 import MoviePrefsForm from "./pages/MoviePrefsForm";
 import Resumen from "./pages/Resumen";
 import "./styles/forms.css";
+import AllForms from "./pages/AllForms";
 
 interface Campo {
   id: string;
@@ -89,10 +90,13 @@ const App: React.FC = () => {
         return <MoviePrefsForm onSubmit={(data) => handleFormSubmit(data, "movie", "resumen")} />;
       case "resumen":
         return <Resumen formData={formData} onBack={() => setPaginaActual("bienvenida")} onReset={handleReset} />;
+      case "allForms":
+        return <AllForms formData={formData} onBack={() => setPaginaActual("bienvenida")} />;
       default:
         return <Home onStart={() => setPaginaActual("personal")} />;
     }
   };
+  
 
   return (
     <div className="app">
@@ -101,6 +105,8 @@ const App: React.FC = () => {
         <div className="language-buttons">
           <button onClick={() => i18n.changeLanguage("es")}>🇪🇸 {t("language.spanish")}</button>
           <button onClick={() => i18n.changeLanguage("en")}>🇬🇧 {t("language.english")}</button>
+          <button onClick={() => setPaginaActual("allForms")}>{t("app.viewAllForms")}</button>
+
         </div>
       </header>
       <section className="content-section">{renderPagina()}</section>

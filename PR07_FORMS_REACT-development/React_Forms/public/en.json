@@ -2,7 +2,8 @@
     "app": {
       "title": "PR07_FORMS_REACT",
       "footer": "PR07_FORMS_REACT",
-      "currentState": "Current State"
+      "currentState": "Current State",
+      "viewAllForms": "View all forms"
     },
     "language": {
       "spanish": "Spanish",
@@ -53,7 +54,13 @@
           "favoriteGenre": "Favorite genre?",
           "favoriteMovie": "Favorite movie?"
         }
-      }
+      },
+        "app": {
+          "title": "My Forms Application",
+          "footer": "All rights reserved",
+          "currentState": "Current page",
+          "viewAllForms": "View all forms"
+        }
     }
   }
   
