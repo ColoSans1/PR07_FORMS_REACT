@@ -1,66 +1,95 @@
 {
-    "app": {
-      "title": "PR07_FORMS_REACT",
-      "footer": "PR07_FORMS_REACT",
-      "currentState": "Current State",
-      "viewAllForms": "View all forms"
+  "app": {
+    "title": "My Forms Application",
+    "footer": "All rights reserved",
+    "currentState": "Current page",
+    "viewAllForms": "View all forms"
+  },
+  "language": {
+    "spanish": "Spanish",
+    "english": "English"
+  },
+  "pages": {
+    "bienvenida": "Welcome",
+    "personal": "Personal Form",
+    "academic": "Academic Form",
+    "tech": "Tech Preferences",
+    "movie": "Movie Preferences",
+    "resumen": "Summary"
+  },
+  "errors": {
+    "completeFields": "Please complete all fields correctly before continuing."
+  },
+  "home": {
+    "title": "Welcome Page",
+    "description": "This application allows you to complete a series of questionnaires to collect personal information, academic evaluations, technology preferences, and movie preferences. Follow the instructions below to complete the forms: Complete each form consecutively. Check for errors before proceeding to the next form. At the end, you will see a summary with all your information.",
+    "startButton": "Start Forms"
+  },
+  "formularios": {
+    "personal": {
+      "titulo": "Personal Information",
+      "campos": {
+        "names": "What is your name?",
+        "age": "What is your age?",
+        "email": "What is your email?"
+      }
     },
-    "language": {
-      "spanish": "Spanish",
-      "english": "English"
+    "academic": {
+      "titulo": "Academic Evaluation",
+      "campos": {
+        "educationLevel": "Educational level?",
+        "university": "University?",
+        "educationLevelOptions": {
+          "secondary": "Secondary",
+          "highSchool": "High School",
+          "university": "University",
+          "postgraduate": "Postgraduate"
+        }
+      }
     },
-    "pages": {
-      "bienvenida": "Welcome",
-      "personal": "Personal Form",
-      "academic": "Academic Form",
-      "tech": "Tech Preferences",
-      "movie": "Movie Preferences",
-      "resumen": "Summary"
+    "tech": {
+      "titulo": "Technology Preferences",
+      "campos": {
+        "favoriteLanguage": "Favorite programming language?",
+        "experienceYears": "Years of experience?",
+        "favoriteLanguageOptions": {
+          "javascript": "JavaScript",
+          "python": "Python",
+          "java": "Java",
+          "typescript": "TypeScript"
+        }
+      }
     },
-    "errors": {
-      "completeFields": "Please complete all fields correctly before continuing."
-    },
-    "home": {
-      "title": "Welcome Page",
-      "description": "This application allows you to complete a series of questionnaires to collect personal information, academic evaluations, technology preferences, and movie preferences. Follow the instructions below to complete the forms: Complete each form consecutively. Check for errors before proceeding to the next form. At the end, you will see a summary with all your information.",
-      "startButton": "Start Forms"
-    },
-    "formularios": {
-      "personal": {
-        "titulo": "Personal Information",
-        "campos": {
-          "names": "What is your name?",
-          "age": "What is your age?",
-          "email": "What is your email?"
+    "movie": {
+      "titulo": "Movie Preferences",
+      "campos": {
+        "favoriteGenre": "Favorite genre?",
+        "favoriteMovie": "Favorite movie?",
+        "favoriteGenreOptions": {
+          "action": "Action",
+          "comedy": "Comedy",
+          "drama": "Drama",
+          "scifi": "Science Fiction"
         }
-      },
-      "academic": {
-        "titulo": "Academic Evaluation",
-        "campos": {
-          "educationLevel": "Educational level?",
-          "university": "University?"
-        }
-      },
-      "tech": {
-        "titulo": "Technology Preferences",
-        "campos": {
-          "favoriteLanguage": "Favorite programming language?",
-          "experienceYears": "Years of experience?"
-        }
-      },
-      "movie": {
-        "titulo": "Movie Preferences",
-        "campos": {
-          "favoriteGenre": "Favorite genre?",
-          "favoriteMovie": "Favorite movie?"
-        }
-      },
-        "app": {
-          "title": "My Forms Application",
-          "footer": "All rights reserved",
-          "currentState": "Current page",
-          "viewAllForms": "View all forms"
-        }
+      }
     }
-  }
-  
+  },
+  "form": {
+    "loading": "Loading...",
+    "personalSubmitButton": "Next",
+    "academicSubmitButton": "Submit",
+    "movieSubmitButton": "Next",
+    "techSubmitButton": "Next"
+  },
+  "validation": {
+    "minLength": "Must be at least {{min}} characters",
+    "maxLength": "Cannot exceed {{max}} characters",
+    "invalidEmail": "The email is not valid",
+    "invalidEmailDomain": "The email must belong to the domain {{domain}}",
+    "minAge": "Age must be greater than {{min}}",
+    "maxSelections": "Maximum {{max}} options allowed",
+    "minExperience": "Years of experience must be greater than {{min}}"
+  },
+  "selectOption": "Select an option",
+  "placeholder": "Enter {{pregunta}}"
+}

@@ -1,4 +1,3 @@
-/* Página de resumen con los datos recopilados y navegación de vuelta */
 import React from 'react';
 
 interface FormData {
@@ -11,10 +10,9 @@ interface FormData {
 interface ResumenProps {
   formData: FormData;
   onBack: () => void;
-  onReset: () => void; // Prop para resetear
+  onReset: () => void;
 }
 
-/* Componente Resumen que muestra los datos recopilados y opciones de navegación */
 const Resumen: React.FC<ResumenProps> = ({ formData, onBack, onReset }) => {
   return (
     <div className="page-container">

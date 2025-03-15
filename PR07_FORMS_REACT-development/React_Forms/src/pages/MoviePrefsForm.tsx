@@ -1,16 +1,14 @@
-/* Página para el formulario de preferencias en cine, usando el componente reutilizable */
 import React from 'react';
-import FormMoviePrefs from '../components/FormMoviePrefs';
+import DynamicForm from '../components/DynamicForm';
 
 interface MoviePrefsFormProps {
   onSubmit: (data: { [key: string]: string | number | string[] }) => void;
 }
 
-/* Componente MoviePrefsForm que renderiza el formulario de cine */
 const MoviePrefsForm: React.FC<MoviePrefsFormProps> = ({ onSubmit }) => {
   return (
     <div className="page-container">
-      <FormMoviePrefs onSubmit={onSubmit} />
+      <DynamicForm formType="movie" onSubmit={onSubmit} />
     </div>
   );
 };

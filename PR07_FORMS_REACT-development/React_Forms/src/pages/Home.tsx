@@ -6,7 +6,7 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ onStart }) => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   return (
     <div className="page-container">

@@ -1,8 +1,8 @@
 {
   "app": {
-    "title": "PR07_FORMS_REACT",
-    "footer": "PR07_FORMS_REACT",
-    "currentState": "Estado actual",
+    "title": "Mi Aplicación de Formularios",
+    "footer": "Todos los derechos reservados",
+    "currentState": "Página actual",
     "viewAllForms": "Ver todos los formularios"
   },
   "language": {
@@ -38,28 +38,58 @@
       "titulo": "Evaluación Académica",
       "campos": {
         "educationLevel": "¿Nivel educativo?",
-        "university": "¿Universidad?"
+        "university": "¿Universidad?",
+        "educationLevelOptions": {
+          "secondary": "Secundaria",
+          "highSchool": "Preparatoria",
+          "university": "Universidad",
+          "postgraduate": "Posgrado"
+        }
       }
     },
     "tech": {
       "titulo": "Preferencias Tecnológicas",
       "campos": {
         "favoriteLanguage": "¿Lenguaje de programación favorito?",
-        "experienceYears": "¿Años de experiencia?"
+        "experienceYears": "¿Años de experiencia?",
+        "favoriteLanguageOptions": {
+          "javascript": "JavaScript",
+          "python": "Python",
+          "java": "Java",
+          "typescript": "TypeScript"
+        }
       }
     },
     "movie": {
       "titulo": "Preferencias de Cine",
       "campos": {
         "favoriteGenre": "¿Género favorito?",
-        "favoriteMovie": "¿Película favorita?"
+        "favoriteMovie": "¿Película favorita?",
+        "favoriteGenreOptions": {
+          "action": "Acción",
+          "comedy": "Comedia",
+          "drama": "Drama",
+          "scifi": "Ciencia Ficción"
+        }
       }
-    },
-      "app": {
-        "title": "Mi Aplicación de Formularios",
-        "footer": "Todos los derechos reservados",
-        "currentState": "Página actual",
-        "viewAllForms": "Ver todos los formularios"
-      }    
-  }
+    }
+  },
+  "form": {
+    "loading": "Cargando...",
+    "personalSubmitButton": "Siguiente",
+    "academicSubmitButton": "Enviar",
+    "movieSubmitButton": "Siguiente",
+    "techSubmitButton": "Siguiente"
+  },
+  "validation": {
+    "minLength": "Debe tener al menos {{min}} caracteres",
+    "maxLength": "No puede tener más de {{max}} caracteres",
+    "invalidEmail": "El email no es válido",
+    "invalidEmailDomain": "El email debe pertenecer al dominio {{domain}}",
+    "minAge": "La edad debe ser mayor a {{min}}",
+    "maxSelections": "Máximo {{max}} opciones permitidas",
+    "minExperience": "Los años de experiencia deben ser mayor a {{min}}"
+  },
+  "selectOption": "Selecciona una opción",
+  "placeholder": "Ingrese {{pregunta}}"
 }

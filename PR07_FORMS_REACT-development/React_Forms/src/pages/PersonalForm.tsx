@@ -1,18 +1,23 @@
-/* Página para el formulario de evaluación académica, usando el componente reutilizable */
 import React from 'react';
-import FormAcademic from '../components/FormAcademic';
+import DynamicForm from '../components/DynamicForm';
+import { useTranslation } from 'react-i18next';
 
-interface AcademicFormProps {
+interface PersonalFormProps {
   onSubmit: (data: { [key: string]: string | number | string[] }) => void;
 }
 
-/* Componente AcademicForm que renderiza el formulario académico */
-const AcademicForm: React.FC<AcademicFormProps> = ({ onSubmit }) => {
+const PersonalForm: React.FC<PersonalFormProps> = ({ onSubmit }) => {
+  const { i18n } = useTranslation();
+
   return (
     <div className="page-container">
-      <FormAcademic onSubmit={onSubmit} />
+      <div className="language-buttons">
+        <button onClick={() => i18n.changeLanguage("es")}>🇪🇸 Español</button>
+        <button onClick={() => i18n.changeLanguage("en")}>🇬🇧 English</button>
+      </div>
+      <DynamicForm formType="personal" onSubmit={onSubmit} />
     </div>
   );
 };
 
-export default AcademicForm;
+export default PersonalForm;
