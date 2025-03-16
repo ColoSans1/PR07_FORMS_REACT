@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import '../assets/DynamicForm.css';
 
+/* 
+ * Interfaz que define la estructura de un campo dentro de un formulario.
+ * - id: Identificador único del campo (string).
+ * - tipo: Tipo de campo ('text', 'textarea', 'select', 'check') (string).
+ * - pregunta: Clave de traducción para la etiqueta del campo (string).
+ * - restricciones: (opcional) Objeto con límites de longitud (min, max) (number).
+ * - validacion: (opcional) Objeto con reglas de validación (formato, dominio, min_edad, max_seleccionados) (string | number).
+ * - opciones: (opcional) Array de opciones para campos 'select' (string[]).
+ */
 interface Campo {
   id: string;
   tipo: 'text' | 'textarea' | 'select' | 'check';
@@ -15,28 +25,61 @@ interface Campo {
   opciones?: string[];
 }
 
+/* 
+ * Interfaz que define la estructura de un formulario completo.
+ * - id: Identificador único del formulario ('personal', 'academic', 'tech', 'movie') (string).
+ * - titulo: Clave de traducción para el título del formulario (string).
+ * - campos: Array de campos que componen el formulario (Campo[]).
+ */
 interface Formulario {
   id: string;
   titulo: string;
   campos: Campo[];
 }
 
+/* 
+ * Interfaz que define el objeto de datos ingresados por el usuario.
+ * - [key: string]: Valor del campo (string, number, o string[]).
+ */
 interface FormData {
   [key: string]: string | number | string[];
 }
 
+/* 
+ * Interfaz de props para el componente DynamicForm.
+ * - formType: Tipo de formulario a renderizar ('academic', 'movie', 'personal', 'tech') (string).
+ * - onSubmit: Callback ejecutado al enviar el formulario con los datos (function).
+ */
 interface DynamicFormProps {
   formType: 'academic' | 'movie' | 'personal' | 'tech';
   onSubmit: (data: FormData) => void;
 }
 
+/* 
+ * Componente React que renderiza formularios dinámicos basados en cuestionario.json.
+ * Maneja la lógica de campos, validaciones, progreso visual y traducción multilingüe.
+ * @param {DynamicFormProps} props - Propiedades del componente.
+ * @returns {JSX.Element} - Elemento JSX con el formulario renderizado.
+ */
 const DynamicForm: React.FC<DynamicFormProps> = ({ formType, onSubmit }) => {
-  const { t, i18n } = useTranslation();
-  const [formData, setFormData] = useState<FormData>({});
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [cuestionario, setCuestionario] = useState<Formulario[]>([]);
-  const [currentForm, setCurrentForm] = useState<Formulario | null>(null);
+  const { t, i18n } = useTranslation(); /* Hook para acceder a las traducciones definidas en los archivos de i18next (es.json, en.json). */
+  const [formData, setFormData] = useState<FormData>({}); /* Estado para almacenar los datos del formulario. */
+  const [errors, setErrors] = useState<{ [key: string]: string }>({}); /* Estado para almacenar errores de validación. */
+  const [cuestionario, setCuestionario] = useState<Formulario[]>([]); /* Estado para almacenar los formularios cargados desde JSON. */
+  const [currentForm, setCurrentForm] = useState<Formulario | null>(null); /* Estado para el formulario actual. */
 
+  /* 
+   * Orden de los formularios para calcular el progreso.
+   * Usado para determinar la posición actual y el porcentaje de progreso.
+   */
+  const formOrder = ['personal', 'academic', 'tech', 'movie'];
+  const currentIndex = formOrder.indexOf(formType); /* Índice del formulario actual en el orden. */
+  const progress = ((currentIndex + 1) / formOrder.length) * 100; /* Porcentaje de progreso (25%, 50%, 75%, 100%). */
+
+  /* 
+   * Efecto para cargar el cuestionario desde cuestionario.json al montar o cambiar idioma.
+   * @effect Se ejecuta cuando cambian formType o i18n.language.
+   */
   useEffect(() => {
     fetch('/cuestionario.json')
       .then(response => response.json())
@@ -48,6 +91,11 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formType, onSubmit }) => {
       .catch(error => console.error(`Error al cargar el cuestionario para ${formType}:`, error));
   }, [formType, i18n.language]);
 
+  /* 
+   * Maneja el cambio en los campos del formulario.
+   * @param {string} id - Identificador del campo.
+   * @param {string | string[]} value - Valor ingresado o seleccionado.
+   */
   const handleChange = (id: string, value: string | string[]) => {
     setFormData(prev => ({
       ...prev,
@@ -59,6 +107,12 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formType, onSubmit }) => {
     }));
   };
 
+  /* 
+   * Valida un campo según sus restricciones y reglas.
+   * @param {Campo} campo - Configuración del campo a validar.
+   * @param {string | string[]} value - Valor a validar.
+   * @returns {string} - Mensaje de error o cadena vacía si es válido.
+   */
   const validateField = (campo: Campo, value: string | string[]): string => {
     let error = '';
 
@@ -107,6 +161,11 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formType, onSubmit }) => {
     return error;
   };
 
+  /* 
+   * Maneja el envío del formulario.
+   * Valida todos los campos y llama onSubmit si no hay errores.
+   * @param {React.FormEvent} e - Evento del formulario.
+   */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentForm) return;
@@ -123,6 +182,11 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formType, onSubmit }) => {
     }
   };
 
+  /* 
+   * Renderiza un campo según su tipo.
+   * @param {Campo} campo - Configuración del campo a renderizar.
+   * @returns {JSX.Element | null} - Elemento JSX del campo o null si el tipo no es soportado.
+   */
   const renderCampo = (campo: Campo) => {
     switch (campo.tipo) {
       case 'text':
@@ -165,16 +229,28 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formType, onSubmit }) => {
     }
   };
 
+  /* 
+   * Renderiza el formulario completo con barra de progreso, campos y botón de envío.
+   * Muestra un mensaje de carga si el formulario no está listo.
+   * @returns {JSX.Element} - Elemento JSX del formulario.
+   */
   if (!currentForm) return <div className="page-container">{t('form.loading') || 'Cargando...'}</div>;
 
   return (
-    <form onSubmit={handleSubmit} className="form-container">
-      <h2>{t(currentForm.titulo)}</h2>
-      {currentForm.campos.map(campo => renderCampo(campo))}
-      <button type="submit" className="start-button">
-        {t(`form.${formType}SubmitButton`) || 'Siguiente'}
-      </button>
-    </form>
+    <div className="form-container">
+      {/* Barra de progreso */}
+      <div className="progress-bar-container">
+        <div className="progress-bar" style={{ width: `${progress}%` }}></div>
+        <span className="progress-text">{t('form.progress', { current: currentIndex + 1, total: formOrder.length })}</span>
+      </div>
+      <form onSubmit={handleSubmit}>
+        <h2>{t(currentForm.titulo)}</h2>
+        {currentForm.campos.map(campo => renderCampo(campo))}
+        <button type="submit" className="start-button">
+          {t(`form.${formType}SubmitButton`) || 'Siguiente'}
+        </button>
+      </form>
+    </div>
   );
 };
 

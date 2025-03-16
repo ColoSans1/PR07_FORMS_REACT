@@ -74,12 +74,13 @@
       }
     }
   },
-  "form": {
+"form": {
     "loading": "Cargando...",
     "personalSubmitButton": "Siguiente",
     "academicSubmitButton": "Enviar",
     "movieSubmitButton": "Siguiente",
-    "techSubmitButton": "Siguiente"
+    "techSubmitButton": "Siguiente",
+    "progress": "Formulario {{current}} de {{total}} completado"
   },
   "validation": {
     "minLength": "Debe tener al menos {{min}} caracteres",
@@ -90,6 +91,8 @@
     "maxSelections": "Máximo {{max}} opciones permitidas",
     "minExperience": "Los años de experiencia deben ser mayor a {{min}}"
   },
+  
   "selectOption": "Selecciona una opción",
   "placeholder": "Ingrese {{pregunta}}"
+  
 }
