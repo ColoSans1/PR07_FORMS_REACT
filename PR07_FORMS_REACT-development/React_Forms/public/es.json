@@ -23,7 +23,8 @@
   "home": {
     "title": "Página de Bienvenida",
     "description": "Esta aplicación te permite completar una serie de cuestionarios para recopilar información personal, evaluaciones académicas, preferencias tecnológicas y preferencias de películas. Sigue las instrucciones a continuación para completar los formularios: Completa cada formulario consecutivamente. Verifica los errores antes de proceder al siguiente formulario. Al final, verás un resumen con toda tu información.",
-    "startButton": "Comenzar Formularios"
+    "startButton": "Comenzar Formularios",
+    "imageAlt": "Imagen de bienvenida"
   },
   "formularios": {
     "personal": {
@@ -74,7 +75,7 @@
       }
     }
   },
-"form": {
+  "form": {
     "loading": "Cargando...",
     "personalSubmitButton": "Siguiente",
     "academicSubmitButton": "Enviar",
@@ -91,8 +92,6 @@
     "maxSelections": "Máximo {{max}} opciones permitidas",
     "minExperience": "Los años de experiencia deben ser mayor a {{min}}"
   },
-  
   "selectOption": "Selecciona una opción",
   "placeholder": "Ingrese {{pregunta}}"
-  
 }

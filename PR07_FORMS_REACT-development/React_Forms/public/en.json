@@ -23,7 +23,8 @@
   "home": {
     "title": "Welcome Page",
     "description": "This application allows you to complete a series of questionnaires to collect personal information, academic evaluations, technology preferences, and movie preferences. Follow the instructions below to complete the forms: Complete each form consecutively. Check for errors before proceeding to the next form. At the end, you will see a summary with all your information.",
-    "startButton": "Start Forms"
+    "startButton": "Start Forms",
+    "imageAlt": "Welcome Image"
   },
   "formularios": {
     "personal": {
@@ -74,7 +75,7 @@
       }
     }
   },
-"form": {
+  "form": {
     "loading": "Loading...",
     "personalSubmitButton": "Next",
     "academicSubmitButton": "Submit",
