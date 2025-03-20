@@ -1,5 +1,5 @@
 import React from "react";
-import "./AllForms.css"; // Asegúrate de crear este archivo CSS
+import "../assets/AllForms.css"; // Asegúrate de crear este archivo CSS
 
 /* 
  * Interfaz que define las propiedades del componente AllForms.

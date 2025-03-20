@@ -229,6 +229,10 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formType, onSubmit }) => {
     }
   };
 
+
+   /*
+    ----------PARTE EXTRA --------------------------
+   */
   /* 
    * Renderiza el formulario completo con barra de progreso, campos y botón de envío.
    * Muestra un mensaje de carga si el formulario no está listo.
