@@ -10,13 +10,13 @@ import "./styles/forms.css";
 import AllForms from "./pages/AllForms";
 
 /* 
- * Define la estructura de un campo dentro de un formulario.
- * id: Identificador único del campo (string).
- * tipo: Tipo de campo ('text', 'textarea', 'select', 'check').
- * pregunta: Clave de traducción para la etiqueta del campo (string).
- * restricciones: Opcional, límites de longitud (min, max).
- * validacion: Opcional, reglas de validación (formato, dominio, etc.).
- * opciones: Opcional, array de opciones para campos 'select'.
+ * Interfaz que define la estructura de un campo dentro de un formulario.
+ * - id: Identificador único del campo (string).
+ * - tipo: Tipo de campo ('text', 'textarea', 'select', 'check') (string).
+ * - pregunta: Clave de traducción para la etiqueta del campo (string).
+ * - restricciones: (opcional) Objeto con límites de longitud (min, max) (number).
+ * - validacion: (opcional) Objeto con reglas de validación (formato, dominio, min_edad, max_seleccionados) (string | number).
+ * - opciones: (opcional) Array de opciones para campos 'select' (string[]).
  */
 interface Campo {
   id: string;
@@ -33,10 +33,10 @@ interface Campo {
 }
 
 /* 
- * Define la estructura de un formulario completo.
- * id: Identificador único del formulario.
- * titulo: Clave de traducción para el título del formulario.
- * campos: Array de campos que componen el formulario.
+ * Interfaz que define la estructura de un formulario completo.
+ * - id: Identificador único del formulario ('personal', 'academic', 'tech', 'movie') (string).
+ * - titulo: Clave de traducción para el título del formulario (string).
+ * - campos: Array de campos que componen el formulario (Campo[]).
  */
 interface Formulario {
   id: string;
@@ -45,8 +45,11 @@ interface Formulario {
 }
 
 /* 
- * Define los datos de los formularios completados.
- * personal, academic, tech, movie: Datos de los formularios correspondientes.
+ * Interfaz que define el objeto de datos de los formularios completados.
+ * - personal: (opcional) Datos del formulario personal (objeto con claves y valores de tipo string, number o string[]).
+ * - academic: (opcional) Datos del formulario académico (objeto con claves y valores de tipo string, number o string[]).
+ * - tech: (opcional) Datos del formulario de preferencias tecnológicas (objeto con claves y valores de tipo string, number o string[]).
+ * - movie: (opcional) Datos del formulario de preferencias de cine (objeto con claves y valores de tipo string, number o string[]).
  */
 interface FormData {
   personal?: { [key: string]: string | number | string[] };
@@ -58,31 +61,38 @@ interface FormData {
 /* 
  * Componente principal de la aplicación.
  * Gestiona el estado de la página actual y los datos de los formularios.
- * Guarda el progreso en localStorage.
+ * Persiste los datos y la página actual en localStorage para mantener el progreso al recargar.
+ * @returns {JSX.Element} - Elemento JSX con la aplicación renderizada.
  */
 const App: React.FC = () => {
   const { t, i18n } = useTranslation();
   const [paginaActual, setPaginaActual] = useState<string>(() => {
+    // Recuperar la página actual de localStorage al cargar la aplicación
     const savedPage = localStorage.getItem("paginaActual");
-    return savedPage || "bienvenida";
+    return savedPage || "bienvenida"; // Si no hay página guardada, inicia en "bienvenida"
   });
   const [formData, setFormData] = useState<FormData>(() => {
+    // Recuperar los datos del formulario de localStorage al cargar la aplicación
     const savedData = localStorage.getItem("formData");
     return savedData ? JSON.parse(savedData) : {};
   });
 
-  // Guardar datos en localStorage cada vez que cambien
+  // Guardar formData en localStorage cada vez que cambie
   useEffect(() => {
     localStorage.setItem("formData", JSON.stringify(formData));
   }, [formData]);
 
+  // Guardar paginaActual en localStorage cada vez que cambie
   useEffect(() => {
     localStorage.setItem("paginaActual", paginaActual);
   }, [paginaActual]);
 
   /* 
    * Maneja el envío de un formulario.
-   * Verifica si hay campos vacíos y actualiza los datos del formulario y la página actual.
+   * Valida que no haya campos vacíos y actualiza formData y paginaActual.
+   * @param {Object} data - Datos del formulario enviado.
+   * @param {string} formId - Identificador del formulario ('personal', 'academic', etc.).
+   * @param {string} nextPage - Página a la que se navegará después de enviar.
    */
   const handleFormSubmit = (data: { [key: string]: string | number | string[] }, formId: string, nextPage: string) => {
     let hasErrors = false;
@@ -95,12 +105,16 @@ const App: React.FC = () => {
       alert(t("errors.completeFields"));
       return;
     }
-    setFormData((prev) => ({ ...prev, [formId]: data }));
+    setFormData((prev) => ({
+      ...prev,
+      [formId]: data,
+    }));
     setPaginaActual(nextPage);
   };
 
   /* 
-   * Reinicia la aplicación, limpia los datos y vuelve a la página de bienvenida.
+   * Reinicia la aplicación.
+   * Limpia formData, paginaActual y localStorage, volviendo a la página de bienvenida.
    */
   const handleReset = () => {
     setFormData({});
@@ -111,6 +125,7 @@ const App: React.FC = () => {
 
   /* 
    * Renderiza la página actual según el estado de paginaActual.
+   * @returns {JSX.Element} - Componente correspondiente a la página actual.
    */
   const renderPagina = () => {
     switch (paginaActual) {
