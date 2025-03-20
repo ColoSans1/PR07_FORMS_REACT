@@ -1,30 +1,33 @@
-// Traemos React para usar el componente
 import React from 'react';
-
-// Traemos DynamicForm, que es el componente que hace el formulario
 import DynamicForm from '../components/DynamicForm';
 
-// Esto dice qué recibe el componente AcademicForm
-// onSubmit es una función que se usa cuando envías el formulario
+/* 
+ * Interfaz que define las propiedades del componente AcademicForm.
+ * - onSubmit: Callback ejecutado al enviar el formulario con los datos ingresados (function).
+ *   Recibe un objeto con claves basadas en los IDs de los campos y valores (string, number, o string[]).
+ */
 interface AcademicFormProps {
   onSubmit: (data: { [key: string]: string | number | string[] }) => void;
 }
 
-// Este es el componente AcademicForm
-// Muestra el formulario académico usando DynamicForm
+/* 
+ * Componente React que renderiza el formulario académico utilizando DynamicForm.
+ * Este componente actúa como un contenedor específico para el formulario de evaluación académica,
+ * delegando la lógica de renderizado y validación a DynamicForm.
+ * @param {AcademicFormProps} props - Propiedades del componente.
+ * @returns {JSX.Element} - Elemento JSX con el formulario académico renderizado.
+ */
 const AcademicForm: React.FC<AcademicFormProps> = ({ onSubmit }) => {
   return (
-    // Esto es un contenedor para el formulario
     <div className="page-container">
       {/* 
-        Aquí usamos DynamicForm
-        formType="academic" dice que es el formulario académico
-        onSubmit pasa la función para enviar los datos
-      */}
+       * Renderiza el componente DynamicForm con el tipo 'academic'.
+       * - formType: Especifica que se renderice el formulario académico.
+       * - onSubmit: Pasa el callback onSubmit al componente hijo para manejar los datos enviados.
+       */}
       <DynamicForm formType="academic" onSubmit={onSubmit} />
     </div>
   );
 };
 
-// Exportamos el componente para usarlo en otros archivos
 export default AcademicForm;

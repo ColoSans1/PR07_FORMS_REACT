@@ -1,57 +1,68 @@
-// Traemos React para usar el componente
 import React from "react";
+import "../assets/AllForms.css"; // Asegúrate de crear este archivo CSS
 
-// Traemos el archivo CSS para darle estilo
-import "../assets/AllForms.css";
-
-// Esto dice qué necesita el componente AllForms
-// formData: Los datos de los formularios ya llenos
-// onBack: Una función para volver atrás
+/* 
+ * Interfaz que define las propiedades del componente AllForms.
+ * - formData: Objeto que contiene los datos de los formularios completados, con claves como 'personal', 'academic', etc.,
+ *   y valores que representan los datos ingresados (any).
+ * - onBack: Callback ejecutado al hacer clic en el botón "Volver" (function).
+ */
 interface AllFormsProps {
   formData: { [key: string]: any };
   onBack: () => void;
 }
 
-// Este es el componente AllForms
-// Muestra todos los formularios que ya llenaste
+/* 
+ * Componente React que muestra un resumen de todos los formularios completados.
+ * Renderiza los datos en tarjetas con tablas y un botón para volver atrás.
+ * Si no hay datos, muestra un mensaje de "sin formularios completados".
+ * @param {AllFormsProps} props - Propiedades del componente.
+ * @returns {JSX.Element} - Elemento JSX con el resumen de formularios.
+ */
 const AllForms: React.FC<AllFormsProps> = ({ formData, onBack }) => {
   return (
-    // Esto es una caja que contiene todo
     <div className="all-forms-container">
-      {/* Título que dice "Formularios Completados" */}
+      {/* 
+       * Título principal del componente, estilizado con la clase all-forms-title.
+       * Muestra "Formularios Completados" como encabezado.
+       */}
       <h2 className="all-forms-title">Formularios Completados</h2>
-
-      {/* Si no hay datos, mostramos un mensaje */}
       {Object.keys(formData).length === 0 ? (
-        // Mensaje que dice que no hay formularios
+        /* 
+         * Mensaje mostrado cuando no hay formularios completados.
+         * Utiliza la clase no-data-message para estilizar el contenedor.
+         */
         <div className="no-data-message">
           <p>No hay formularios completados.</p>
         </div>
       ) : (
-        // Si hay datos, mostramos los formularios en tarjetas
+        /* 
+         * Contenedor de cuadrícula que muestra las tarjetas de cada formulario completado.
+         * Utiliza la clase forms-grid para un diseño responsivo.
+         */
         <div className="forms-grid">
-          {/* Recorremos cada formulario */}
           {Object.entries(formData).map(([formName, data]) => (
-            // Cada formulario tiene su tarjeta
             <div key={formName} className="form-card">
-              {/* Título de la tarjeta, pone la primera letra en mayúscula */}
-              <h3 className="form-card-title">
-                {formName.charAt(0).toUpperCase() + formName.slice(1)}
-              </h3>
-              {/* Tabla para mostrar los datos */}
+              {/* 
+               * Título de cada tarjeta, capitalizando la primera letra del nombre del formulario.
+               * Estilizado con la clase form-card-title.
+               */}
+              <h3 className="form-card-title">{formName.charAt(0).toUpperCase() + formName.slice(1)}</h3>
               <table className="data-table">
                 <tbody>
-                  {/* Recorremos cada dato del formulario */}
                   {Object.entries(data).map(([key, value]) => (
-                    // Cada dato es una fila en la tabla
                     <tr key={key} className="data-row">
-                      {/* Nombre del campo, con la primera letra en mayúscula */}
+                      {/* 
+                       * Celda de la tabla con la etiqueta del campo, capitalizando y reemplazando guiones bajos por espacios.
+                       * Estilizada con la clase data-label.
+                       */}
                       <td className="data-label">
-                        <strong>
-                          {key.replace(/_/g, ' ').charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ')}:
-                        </strong>
+                        <strong>{key.replace(/_/g, ' ').charAt(0).toUpperCase() + key.slice(1).replace(/_/g, ' ')}:</strong>
                       </td>
-                      {/* Valor del campo */}
+                      {/* 
+                       * Celda de la tabla con el valor del campo, serializado como JSON.
+                       * Estilizada con la clase data-value.
+                       */}
                       <td className="data-value">{JSON.stringify(value)}</td>
                     </tr>
                   ))}
@@ -61,8 +72,10 @@ const AllForms: React.FC<AllFormsProps> = ({ formData, onBack }) => {
           ))}
         </div>
       )}
-
-      {/* Botón para volver atrás */}
+      {/* 
+       * Botón para volver atrás, estilizado con la clase back-button.
+       * Ejecuta el callback onBack al hacer clic.
+       */}
       <button className="back-button" onClick={onBack}>
         Volver
       </button>
@@ -70,5 +83,4 @@ const AllForms: React.FC<AllFormsProps> = ({ formData, onBack }) => {
   );
 };
 
-// Exportamos el componente para usarlo en otros archivos
 export default AllForms;

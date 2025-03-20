@@ -3,13 +3,13 @@ import { useTranslation } from 'react-i18next';
 import '../assets/DynamicForm.css';
 
 /* 
- * Definición del campo del formulario.
- * id: Identificador único.
- * tipo: Tipo de campo (texto, área, selección, check).
- * pregunta: Texto de la pregunta (clave de traducción).
- * restricciones: Límites de longitud.
- * validacion: Reglas de validación (ej. email, edad mínima).
- * opciones: Opciones para campos de tipo 'select'.
+ * Interfaz que define la estructura de un campo dentro de un formulario.
+ * - id: Identificador único del campo (string).
+ * - tipo: Tipo de campo ('text', 'textarea', 'select', 'check') (string).
+ * - pregunta: Clave de traducción para la etiqueta del campo (string).
+ * - restricciones: (opcional) Objeto con límites de longitud (min, max) (number).
+ * - validacion: (opcional) Objeto con reglas de validación (formato, dominio, min_edad, max_seleccionados) (string | number).
+ * - opciones: (opcional) Array de opciones para campos 'select' (string[]).
  */
 interface Campo {
   id: string;
@@ -26,10 +26,10 @@ interface Campo {
 }
 
 /* 
- * Definición del formulario.
- * id: Identificador del formulario.
- * titulo: Título del formulario (clave de traducción).
- * campos: Lista de campos que contiene el formulario.
+ * Interfaz que define la estructura de un formulario completo.
+ * - id: Identificador único del formulario ('personal', 'academic', 'tech', 'movie') (string).
+ * - titulo: Clave de traducción para el título del formulario (string).
+ * - campos: Array de campos que componen el formulario (Campo[]).
  */
 interface Formulario {
   id: string;
@@ -38,17 +38,17 @@ interface Formulario {
 }
 
 /* 
- * Datos del formulario.
- * key: valor de cada campo.
+ * Interfaz que define el objeto de datos ingresados por el usuario.
+ * - [key: string]: Valor del campo (string, number, o string[]).
  */
 interface FormData {
   [key: string]: string | number | string[];
 }
 
 /* 
- * Props para el componente DynamicForm.
- * formType: Tipo de formulario a renderizar.
- * onSubmit: Función que se ejecuta al enviar el formulario.
+ * Interfaz de props para el componente DynamicForm.
+ * - formType: Tipo de formulario a renderizar ('academic', 'movie', 'personal', 'tech') (string).
+ * - onSubmit: Callback ejecutado al enviar el formulario con los datos (function).
  */
 interface DynamicFormProps {
   formType: 'academic' | 'movie' | 'personal' | 'tech';
@@ -56,27 +56,44 @@ interface DynamicFormProps {
 }
 
 /* 
- * Componente para renderizar formularios dinámicos.
- * Muestra progreso, validación y guarda datos en localStorage.
+ * Componente React que renderiza formularios dinámicos basados en cuestionario.json.
+ * Maneja la lógica de campos, validaciones, progreso visual y traducción multilingüe.
+ * Muestra un contador de campos completados y persiste los datos en localStorage.
+ * @param {DynamicFormProps} props - Propiedades del componente.
+ * @returns {JSX.Element} - Elemento JSX con el formulario renderizado.
  */
 const DynamicForm: React.FC<DynamicFormProps> = ({ formType, onSubmit }) => {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation(); /* Hook para acceder a las traducciones definidas en los archivos de i18next (es.json, en.json). */
   const [formData, setFormData] = useState<FormData>(() => {
+    // Recuperar los datos del formulario de localStorage al cargar el componente
     const savedData = localStorage.getItem("formData");
     const parsedData = savedData ? JSON.parse(savedData) : {};
     return parsedData[formType] || {};
   });
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [cuestionario, setCuestionario] = useState<Formulario[]>([]);
-  const [currentForm, setCurrentForm] = useState<Formulario | null>(null);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({}); /* Estado para almacenar errores de validación. */
+  const [cuestionario, setCuestionario] = useState<Formulario[]>([]); /* Estado para almacenar los formularios cargados desde JSON. */
+  const [currentForm, setCurrentForm] = useState<Formulario | null>(null); /* Estado para el formulario actual. */
 
+  /* 
+   * Orden de los formularios para calcular el progreso.
+   * Usado para determinar la posición actual y el porcentaje de progreso.
+   */
   const formOrder = ['personal', 'academic', 'tech', 'movie'];
-  const currentIndex = formOrder.indexOf(formType);
-  const progress = ((currentIndex + 1) / formOrder.length) * 100;
+  const currentIndex = formOrder.indexOf(formType); /* Índice del formulario actual en el orden. */
+  const progress = ((currentIndex + 1) / formOrder.length) * 100; /* Porcentaje de progreso (25%, 50%, 75%, 100%). */
 
+  // Calcular el número de campos completados
   const totalFields = currentForm?.campos.length || 0;
-  const completedFields = Object.values(formData).filter(value => value !== '' && value !== undefined).length;
+  const completedFields = Object.values(formData).filter(value => 
+    value !== '' && value !== undefined && value !== null && 
+    (typeof value !== 'string' || value.trim() !== '') &&
+    (!Array.isArray(value) || value.length > 0)
+  ).length;
 
+  /* 
+   * Efecto para cargar el cuestionario desde cuestionario.json al montar o cambiar idioma.
+   * @effect Se ejecuta cuando cambian formType o i18n.language.
+   */
   useEffect(() => {
     fetch('/cuestionario.json')
       .then(response => response.json())
@@ -85,42 +102,95 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formType, onSubmit }) => {
         const selectedForm = data.formularios.find((f: Formulario) => f.id === formType);
         setCurrentForm(selectedForm || null);
       })
-      .catch(error => console.error(`Error al cargar el cuestionario:`, error));
+      .catch(error => console.error(`Error al cargar el cuestionario para ${formType}:`, error));
   }, [formType, i18n.language]);
 
+  /* 
+   * Maneja el cambio en los campos del formulario.
+   * Actualiza formData y guarda los datos en localStorage.
+   * @param {string} id - Identificador del campo.
+   * @param {string | string[]} value - Valor ingresado o seleccionado.
+   */
   const handleChange = (id: string, value: string | string[]) => {
     setFormData(prev => {
-      const updatedFormData = { ...prev, [id]: value };
+      const updatedFormData = {
+        ...prev,
+        [id]: value,
+      };
+      // Actualizar localStorage con los datos del formulario actual
       const savedData = localStorage.getItem("formData");
       const parsedData = savedData ? JSON.parse(savedData) : {};
-      localStorage.setItem("formData", JSON.stringify({ ...parsedData, [formType]: updatedFormData }));
+      localStorage.setItem("formData", JSON.stringify({
+        ...parsedData,
+        [formType]: updatedFormData,
+      }));
       return updatedFormData;
     });
-    setErrors(prev => ({ ...prev, [id]: '' }));
+    setErrors(prev => ({
+      ...prev,
+      [id]: '',
+    }));
   };
 
+  /* 
+   * Valida un campo según sus restricciones y reglas.
+   * @param {Campo} campo - Configuración del campo a validar.
+   * @param {string | string[]} value - Valor a validar.
+   * @returns {string} - Mensaje de error o cadena vacía si es válido.
+   */
   const validateField = (campo: Campo, value: string | string[]): string => {
     let error = '';
 
     if (campo.restricciones) {
       const length = Array.isArray(value) ? value.join('').length : (value as string).length;
       if (length < campo.restricciones.min) {
-        error = `Debe tener al menos ${campo.restricciones.min} caracteres`;
+        error = t('validation.minLength', { min: campo.restricciones.min }) || `Debe tener al menos ${campo.restricciones.min} caracteres`;
       } else if (length > campo.restricciones.max) {
-        error = `No puede tener más de ${campo.restricciones.max} caracteres`;
+        error = t('validation.maxLength', { max: campo.restricciones.max }) || `No puede tener más de ${campo.restricciones.max} caracteres`;
       }
     }
 
-    if (campo.validacion?.formato === 'email' && value) {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!emailRegex.test(value as string)) {
-        error = 'El email no es válido';
+    if (campo.validacion) {
+      if (campo.validacion.formato === 'email' && value) {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(value as string)) {
+          error = t('validation.invalidEmail') || 'El email no es válido';
+        }
+        if (campo.validacion.dominio && value) {
+          const emailDomain = (value as string).split('@')[1];
+          if (emailDomain !== campo.validacion.dominio) {
+            error = t('validation.invalidEmailDomain', { domain: campo.validacion.dominio }) || `El email debe pertenecer al dominio ${campo.validacion.dominio}`;
+          }
+        }
+      }
+
+      if (campo.validacion.min_edad && typeof value === 'string') {
+        const numericValue = parseInt(value);
+        if (isNaN(numericValue) || numericValue < campo.validacion.min_edad) {
+          error = t('validation.minAge', { min: campo.validacion.min_edad }) || `La edad debe ser mayor a ${campo.validacion.min_edad}`;
+        }
+      }
+
+      if (campo.validacion.max_seleccionados && Array.isArray(value) && value.length > campo.validacion.max_seleccionados) {
+        error = t('validation.maxSelections', { max: campo.validacion.max_seleccionados }) || `Máximo ${campo.validacion.max_seleccionados} opciones permitidas`;
+      }
+    }
+
+    if (campo.id === 'experienceYears' && typeof value === 'string') {
+      const years = parseInt(value);
+      if (isNaN(years) || years < (campo.validacion?.min_edad || 0)) {
+        error = t('validation.minExperience', { min: campo.validacion?.min_edad }) || `Los años de experiencia deben ser mayor a ${campo.validacion?.min_edad || 0}`;
       }
     }
 
     return error;
   };
 
+  /* 
+   * Maneja el envío del formulario.
+   * Valida todos los campos y llama onSubmit si no hay errores.
+   * @param {React.FormEvent} e - Evento del formulario.
+   */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentForm) return;
@@ -137,6 +207,11 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formType, onSubmit }) => {
     }
   };
 
+  /* 
+   * Renderiza un campo según su tipo.
+   * @param {Campo} campo - Configuración del campo a renderizar.
+   * @returns {JSX.Element | null} - Elemento JSX del campo o null si el tipo no es soportado.
+   */
   const renderCampo = (campo: Campo) => {
     switch (campo.tipo) {
       case 'text':
@@ -149,6 +224,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formType, onSubmit }) => {
               name={campo.id}
               value={formData[campo.id] as string || ''}
               onChange={(e) => handleChange(campo.id, e.target.value)}
+              placeholder={t('placeholder', { pregunta: t(campo.pregunta).toLowerCase() }) || `Ingrese ${t(campo.pregunta).toLowerCase()}`}
               required
             />
             {errors[campo.id] && <span className="error">{errors[campo.id]}</span>}
@@ -165,7 +241,7 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formType, onSubmit }) => {
               onChange={(e) => handleChange(campo.id, e.target.value)}
               required
             >
-              <option value="">Selecciona una opción</option>
+              <option value="">{t('selectOption') || 'Selecciona una opción'}</option>
               {campo.opciones?.map((option, index) => (
                 <option key={index} value={option}>
                   {t(option)}
@@ -180,24 +256,31 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formType, onSubmit }) => {
     }
   };
 
-  if (!currentForm) return <div className="page-container">Cargando...</div>;
+  /* 
+   * Renderiza el formulario completo con barra de progreso, contador de campos completados y botones de acción.
+   * Muestra un mensaje de carga si el formulario no está listo.
+   * @returns {JSX.Element} - Elemento JSX del formulario.
+   */
+  if (!currentForm) return <div className="page-container">{t('form.loading') || 'Cargando...'}</div>;
 
   return (
     <div className="form-container">
       {/* Barra de progreso */}
       <div className="progress-bar-container">
         <div className="progress-bar" style={{ width: `${progress}%` }}></div>
-        <span className="progress-text">{`Formulario ${currentIndex + 1} de ${formOrder.length}`}</span>
+        <span className="progress-text">{t('form.progress', { current: currentIndex + 1, total: formOrder.length })}</span>
       </div>
       {/* Contador de campos completados */}
       <div className="fields-counter">
-        <span>{`Campos completados: ${completedFields}/${totalFields}`}</span>
+        <span>
+          {t('form.completedFields', { completed: completedFields, total: totalFields }) || `Fields completed: ${completedFields}/${totalFields}`}
+        </span>
       </div>
       <form onSubmit={handleSubmit}>
         <h2>{t(currentForm.titulo)}</h2>
         {currentForm.campos.map(campo => renderCampo(campo))}
         <button type="submit" className="start-button">
-          Siguiente
+          {t(`form.${formType}SubmitButton`) || 'Siguiente'}
         </button>
       </form>
     </div>
