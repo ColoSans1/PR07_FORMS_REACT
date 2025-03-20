@@ -9,6 +9,15 @@ import Resumen from "./pages/Resumen";
 import "./styles/forms.css";
 import AllForms from "./pages/AllForms";
 
+/* 
+ * Interfaz que define la estructura de un campo dentro de un formulario.
+ * - id: Identificador único del campo (string).
+ * - tipo: Tipo de campo ('text', 'textarea', 'select', 'check') (string).
+ * - pregunta: Clave de traducción para la etiqueta del campo (string).
+ * - restricciones: (opcional) Objeto con límites de longitud (min, max) (number).
+ * - validacion: (opcional) Objeto con reglas de validación (formato, dominio, min_edad, max_seleccionados) (string | number).
+ * - opciones: (opcional) Array de opciones para campos 'select' (string[]).
+ */
 interface Campo {
   id: string;
   tipo: "text" | "textarea" | "select" | "check";
@@ -23,12 +32,25 @@ interface Campo {
   opciones?: string[];
 }
 
+/* 
+ * Interfaz que define la estructura de un formulario completo.
+ * - id: Identificador único del formulario ('personal', 'academic', 'tech', 'movie') (string).
+ * - titulo: Clave de traducción para el título del formulario (string).
+ * - campos: Array de campos que componen el formulario (Campo[]).
+ */
 interface Formulario {
   id: string;
   titulo: string;
   campos: Campo[];
 }
 
+/* 
+ * Interfaz que define el objeto de datos de los formularios completados.
+ * - personal: (opcional) Datos del formulario personal (objeto con claves y valores de tipo string, number o string[]).
+ * - academic: (opcional) Datos del formulario académico (objeto con claves y valores de tipo string, number o string[]).
+ * - tech: (opcional) Datos del formulario de preferencias tecnológicas (objeto con claves y valores de tipo string, number o string[]).
+ * - movie: (opcional) Datos del formulario de preferencias de cine (objeto con claves y valores de tipo string, number o string[]).
+ */
 interface FormData {
   personal?: { [key: string]: string | number | string[] };
   academic?: { [key: string]: string | number | string[] };
@@ -36,22 +58,42 @@ interface FormData {
   movie?: { [key: string]: string | number | string[] };
 }
 
+/* 
+ * Componente principal de la aplicación.
+ * Gestiona el estado de la página actual y los datos de los formularios.
+ * Persiste los datos y la página actual en localStorage para mantener el progreso al recargar.
+ * @returns {JSX.Element} - Elemento JSX con la aplicación renderizada.
+ */
 const App: React.FC = () => {
   const { t, i18n } = useTranslation();
-  const [paginaActual, setPaginaActual] = useState("bienvenida");
-  const [formData, setFormData] = useState<FormData>({});
-
-  useEffect(() => {
+  const [paginaActual, setPaginaActual] = useState<string>(() => {
+    // Recuperar la página actual de localStorage al cargar la aplicación
+    const savedPage = localStorage.getItem("paginaActual");
+    return savedPage || "bienvenida"; // Si no hay página guardada, inicia en "bienvenida"
+  });
+  const [formData, setFormData] = useState<FormData>(() => {
+    // Recuperar los datos del formulario de localStorage al cargar la aplicación
     const savedData = localStorage.getItem("formData");
-    if (savedData) {
-      setFormData(JSON.parse(savedData));
-    }
-  }, []);
+    return savedData ? JSON.parse(savedData) : {};
+  });
 
+  // Guardar formData en localStorage cada vez que cambie
   useEffect(() => {
     localStorage.setItem("formData", JSON.stringify(formData));
   }, [formData]);
 
+  // Guardar paginaActual en localStorage cada vez que cambie
+  useEffect(() => {
+    localStorage.setItem("paginaActual", paginaActual);
+  }, [paginaActual]);
+
+  /* 
+   * Maneja el envío de un formulario.
+   * Valida que no haya campos vacíos y actualiza formData y paginaActual.
+   * @param {Object} data - Datos del formulario enviado.
+   * @param {string} formId - Identificador del formulario ('personal', 'academic', etc.).
+   * @param {string} nextPage - Página a la que se navegará después de enviar.
+   */
   const handleFormSubmit = (data: { [key: string]: string | number | string[] }, formId: string, nextPage: string) => {
     let hasErrors = false;
     Object.values(data).forEach((value) => {
@@ -70,12 +112,21 @@ const App: React.FC = () => {
     setPaginaActual(nextPage);
   };
 
+  /* 
+   * Reinicia la aplicación.
+   * Limpia formData, paginaActual y localStorage, volviendo a la página de bienvenida.
+   */
   const handleReset = () => {
     setFormData({});
     setPaginaActual("bienvenida");
     localStorage.removeItem("formData");
+    localStorage.removeItem("paginaActual");
   };
 
+  /* 
+   * Renderiza la página actual según el estado de paginaActual.
+   * @returns {JSX.Element} - Componente correspondiente a la página actual.
+   */
   const renderPagina = () => {
     switch (paginaActual) {
       case "bienvenida":
@@ -96,7 +147,6 @@ const App: React.FC = () => {
         return <Home onStart={() => setPaginaActual("personal")} />;
     }
   };
-  
 
   return (
     <div className="app">
@@ -106,7 +156,6 @@ const App: React.FC = () => {
           <button onClick={() => i18n.changeLanguage("es")}>🇪🇸 {t("language.spanish")}</button>
           <button onClick={() => i18n.changeLanguage("en")}>🇬🇧 {t("language.english")}</button>
           <button onClick={() => setPaginaActual("allForms")}>{t("app.viewAllForms")}</button>
-
         </div>
       </header>
       <section className="content-section">{renderPagina()}</section>

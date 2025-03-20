@@ -58,12 +58,18 @@ interface DynamicFormProps {
 /* 
  * Componente React que renderiza formularios dinámicos basados en cuestionario.json.
  * Maneja la lógica de campos, validaciones, progreso visual y traducción multilingüe.
+ * Muestra un contador de campos completados y persiste los datos en localStorage.
  * @param {DynamicFormProps} props - Propiedades del componente.
  * @returns {JSX.Element} - Elemento JSX con el formulario renderizado.
  */
 const DynamicForm: React.FC<DynamicFormProps> = ({ formType, onSubmit }) => {
   const { t, i18n } = useTranslation(); /* Hook para acceder a las traducciones definidas en los archivos de i18next (es.json, en.json). */
-  const [formData, setFormData] = useState<FormData>({}); /* Estado para almacenar los datos del formulario. */
+  const [formData, setFormData] = useState<FormData>(() => {
+    // Recuperar los datos del formulario de localStorage al cargar el componente
+    const savedData = localStorage.getItem("formData");
+    const parsedData = savedData ? JSON.parse(savedData) : {};
+    return parsedData[formType] || {};
+  });
   const [errors, setErrors] = useState<{ [key: string]: string }>({}); /* Estado para almacenar errores de validación. */
   const [cuestionario, setCuestionario] = useState<Formulario[]>([]); /* Estado para almacenar los formularios cargados desde JSON. */
   const [currentForm, setCurrentForm] = useState<Formulario | null>(null); /* Estado para el formulario actual. */
@@ -75,6 +81,14 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formType, onSubmit }) => {
   const formOrder = ['personal', 'academic', 'tech', 'movie'];
   const currentIndex = formOrder.indexOf(formType); /* Índice del formulario actual en el orden. */
   const progress = ((currentIndex + 1) / formOrder.length) * 100; /* Porcentaje de progreso (25%, 50%, 75%, 100%). */
+
+  // Calcular el número de campos completados
+  const totalFields = currentForm?.campos.length || 0;
+  const completedFields = Object.values(formData).filter(value => 
+    value !== '' && value !== undefined && value !== null && 
+    (typeof value !== 'string' || value.trim() !== '') &&
+    (!Array.isArray(value) || value.length > 0)
+  ).length;
 
   /* 
    * Efecto para cargar el cuestionario desde cuestionario.json al montar o cambiar idioma.
@@ -93,14 +107,25 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formType, onSubmit }) => {
 
   /* 
    * Maneja el cambio en los campos del formulario.
+   * Actualiza formData y guarda los datos en localStorage.
    * @param {string} id - Identificador del campo.
    * @param {string | string[]} value - Valor ingresado o seleccionado.
    */
   const handleChange = (id: string, value: string | string[]) => {
-    setFormData(prev => ({
-      ...prev,
-      [id]: value,
-    }));
+    setFormData(prev => {
+      const updatedFormData = {
+        ...prev,
+        [id]: value,
+      };
+      // Actualizar localStorage con los datos del formulario actual
+      const savedData = localStorage.getItem("formData");
+      const parsedData = savedData ? JSON.parse(savedData) : {};
+      localStorage.setItem("formData", JSON.stringify({
+        ...parsedData,
+        [formType]: updatedFormData,
+      }));
+      return updatedFormData;
+    });
     setErrors(prev => ({
       ...prev,
       [id]: '',
@@ -217,8 +242,10 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formType, onSubmit }) => {
               required
             >
               <option value="">{t('selectOption') || 'Selecciona una opción'}</option>
-              {campo.opciones?.map(option => (
-                <option key={option} value={t(option)}>{t(option)}</option>
+              {campo.opciones?.map((option, index) => (
+                <option key={index} value={option}>
+                  {t(option)}
+                </option>
               ))}
             </select>
             {errors[campo.id] && <span className="error">{errors[campo.id]}</span>}
@@ -229,12 +256,8 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formType, onSubmit }) => {
     }
   };
 
-
-   /*
-    ----------PARTE EXTRA --------------------------
-   */
   /* 
-   * Renderiza el formulario completo con barra de progreso, campos y botón de envío.
+   * Renderiza el formulario completo con barra de progreso, contador de campos completados y botones de acción.
    * Muestra un mensaje de carga si el formulario no está listo.
    * @returns {JSX.Element} - Elemento JSX del formulario.
    */
@@ -246,6 +269,12 @@ const DynamicForm: React.FC<DynamicFormProps> = ({ formType, onSubmit }) => {
       <div className="progress-bar-container">
         <div className="progress-bar" style={{ width: `${progress}%` }}></div>
         <span className="progress-text">{t('form.progress', { current: currentIndex + 1, total: formOrder.length })}</span>
+      </div>
+      {/* Contador de campos completados */}
+      <div className="fields-counter">
+        <span>
+          {t('form.completedFields', { completed: completedFields, total: totalFields }) || `Fields completed: ${completedFields}/${totalFields}`}
+        </span>
       </div>
       <form onSubmit={handleSubmit}>
         <h2>{t(currentForm.titulo)}</h2>

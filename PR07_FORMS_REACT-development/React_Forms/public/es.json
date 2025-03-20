@@ -75,13 +75,14 @@
       }
     }
   },
-  "form": {
+"form": {
     "loading": "Cargando...",
     "personalSubmitButton": "Siguiente",
     "academicSubmitButton": "Enviar",
     "movieSubmitButton": "Siguiente",
     "techSubmitButton": "Siguiente",
-    "progress": "Formulario {{current}} de {{total}} completado"
+    "progress": "Formulario {{current}} de {{total}} completado",
+    "completedFields": "Campos completados: {{completed}}/{{total}}"
   },
   "validation": {
     "minLength": "Debe tener al menos {{min}} caracteres",

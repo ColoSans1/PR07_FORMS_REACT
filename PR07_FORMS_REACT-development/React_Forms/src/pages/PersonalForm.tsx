@@ -28,18 +28,7 @@ const PersonalForm: React.FC<PersonalFormProps> = ({ onSubmit }) => {
        * Contenedor de botones para cambiar el idioma de la aplicación.
        * Utiliza la clase language-buttons para estilizar los botones.
        */}
-      <div className="language-buttons">
-        {/* 
-         * Botón para cambiar el idioma a español.
-         * Al hacer clic, llama a i18n.changeLanguage("es").
-         */}
-        <button onClick={() => i18n.changeLanguage("es")}>🇪🇸 Español</button>
-        {/* 
-         * Botón para cambiar el idioma a inglés.
-         * Al hacer clic, llama a i18n.changeLanguage("en").
-         */}
-        <button onClick={() => i18n.changeLanguage("en")}>🇬🇧 English</button>
-      </div>
+
       {/* 
        * Renderiza el componente DynamicForm con el tipo 'personal'.
        * - formType: Especifica que se renderice el formulario personal.

@@ -75,13 +75,14 @@
       }
     }
   },
-  "form": {
+"form": {
     "loading": "Loading...",
     "personalSubmitButton": "Next",
     "academicSubmitButton": "Submit",
     "movieSubmitButton": "Next",
     "techSubmitButton": "Next",
-    "progress": "Form {{current}} of {{total}} completed"
+    "progress": "Form {{current}} of {{total}} completed",
+    "completedFields": "Fields completed: {{completed}}/{{total}}"
   },
   "validation": {
     "minLength": "Must be at least {{min}} characters",
